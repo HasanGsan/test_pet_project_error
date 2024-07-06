@@ -23,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 //binding.rcView.adapter = adapter
 //return binding.root
 
-
 class HomeFragment : Fragment() {
     private lateinit var adapter: ProductAdapter
     private lateinit var binding: HomeFragmentBinding
@@ -43,6 +42,10 @@ class HomeFragment : Fragment() {
         binding.rcView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rcView.adapter = adapter
 
+        with(binding) {
+            newTitleNav.text = "Jopa"
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://gallery.prod1.webant.ru")
             .addConverterFactory(GsonConverterFactory.create())
@@ -52,6 +55,7 @@ class HomeFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val list = productApi.getAllPhotos()
+            println("listOfPhoto ${list.photos}")
             activity?.runOnUiThread {
                 adapter.submitList(list.photos)
             }
